@@ -1,10 +1,10 @@
-public class MyLinkedList {
+public class MyLinkedList<T> {
     private class Node {
-        Object value;
+        T value;
         Node next;
         Node prev;
 
-        Node(Object value) {
+        Node(T value) {
             this.value = value;
             this.next = null;
             this.prev = null;
@@ -21,7 +21,7 @@ public class MyLinkedList {
         size = 0;
     }
 
-    public void add(Object value) {
+    public void add(T value) {
         Node newNode = new Node(value);
         if (head == null) {
             head = newNode;
@@ -67,7 +67,7 @@ public class MyLinkedList {
         return size;
     }
 
-    public Object get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }

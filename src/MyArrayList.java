@@ -1,14 +1,14 @@
-public class MyArrayList {
-    private Object[] data;
+public class MyArrayList<T> {
+    private T[] data;
     private int size;
     private static final int DEFAULT_CAPACITY = 10;
 
     public MyArrayList() {
-        this.data = new Object[DEFAULT_CAPACITY];
+        this.data = (T[]) new Object[DEFAULT_CAPACITY];
         this.size = 0;
     }
 
-    public void add(Object value) {
+    public void add(T value) {
         if (size == data.length) {
             resizeArray();
         }
@@ -17,10 +17,7 @@ public class MyArrayList {
     }
 
     public void remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-        }
-
+        checkIndex(index);
         for (int i = index; i < size - 1; i++) {
             data[i] = data[i + 1];
         }
@@ -29,9 +26,7 @@ public class MyArrayList {
     }
 
     public void clear() {
-        for (int i = 0; i < size; i++) {
-            data[i] = null;
-        }
+        data = (T[]) new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -39,18 +34,22 @@ public class MyArrayList {
         return size;
     }
 
-    public Object get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
-        }
+    public T get(int index) {
+        checkIndex(index);
         return data[index];
     }
 
     private void resizeArray() {
-        Object[] newData = new Object[data.length * 2];
+        T[] newData = (T[]) new Object[data.length * 2];
         for (int i = 0; i < size; i++) {
             newData[i] = data[i];
         }
         data = newData;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index out of bounds: " + index);
+        }
     }
 }

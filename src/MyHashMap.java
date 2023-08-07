@@ -1,10 +1,10 @@
-public class MyHashMap {
+public class MyHashMap<K, V> {
     private class Node {
-        Object key;
-        Object value;
+        K key;
+        V value;
         Node next;
 
-        Node(Object key, Object value) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
             this.next = null;
@@ -14,18 +14,39 @@ public class MyHashMap {
     private Node[] buckets;
     private int capacity;
     private int size;
+    private static final int DEFAULT_CAPACITY = 16;
+    private static final double LOAD_FACTOR = 0.75;
 
     public MyHashMap() {
-        capacity = 16; // Initial capacity
+        capacity = DEFAULT_CAPACITY;
         buckets = new Node[capacity];
         size = 0;
     }
 
-    private int hash(Object key) {
+    private int hash(K key) {
         return Math.abs(key.hashCode()) % capacity;
     }
 
-    public void put(Object key, Object value) {
+    private void rehash() {
+        Node[] oldBuckets = buckets;
+        capacity *= 2;
+        buckets = new Node[capacity];
+        size = 0;
+
+        for (Node oldNode : oldBuckets) {
+            Node currentNode = oldNode;
+            while (currentNode != null) {
+                put(currentNode.key, currentNode.value);
+                currentNode = currentNode.next;
+            }
+        }
+    }
+
+    public void put(K key, V value) {
+        if ((double) size / capacity >= LOAD_FACTOR) {
+            rehash();
+        }
+
         int index = hash(key);
         Node newNode = new Node(key, value);
 
@@ -45,7 +66,7 @@ public class MyHashMap {
         size++;
     }
 
-    public void remove(Object key) {
+    public void remove(K key) {
         int index = hash(key);
 
         if (buckets[index] == null) {
@@ -73,9 +94,7 @@ public class MyHashMap {
     }
 
     public void clear() {
-        for (int i = 0; i < capacity; i++) {
-            buckets[i] = null;
-        }
+        buckets = new Node[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -83,7 +102,7 @@ public class MyHashMap {
         return size;
     }
 
-    public Object get(Object key) {
+    public V get(K key) {
         int index = hash(key);
         Node currentNode = buckets[index];
 

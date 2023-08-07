@@ -1,9 +1,9 @@
-public class MyStack {
+public class MyStack<T> {
     private class Node {
-        Object value;
+        T value;
         Node next;
 
-        Node(Object value) {
+        Node(T value) {
             this.value = value;
             this.next = null;
         }
@@ -17,7 +17,7 @@ public class MyStack {
         size = 0;
     }
 
-    public void push(Object value) {
+    public void push(T value) {
         Node newNode = new Node(value);
         newNode.next = top;
         top = newNode;
@@ -46,18 +46,18 @@ public class MyStack {
         return size;
     }
 
-    public Object peek() {
+    public T peek() {
         if (top == null) {
             return null;
         }
         return top.value;
     }
 
-    public Object pop() {
+    public T pop() {
         if (top == null) {
             return null;
         }
-        Object value = top.value;
+        T value = top.value;
         top = top.next;
         size--;
         return value;

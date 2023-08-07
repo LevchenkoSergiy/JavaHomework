@@ -1,9 +1,9 @@
-public class MyQueue {
+public class MyQueue<T> {
     private class Node {
-        Object value;
+        T value;
         Node next;
 
-        Node(Object value) {
+        Node(T value) {
             this.value = value;
             this.next = null;
         }
@@ -19,7 +19,7 @@ public class MyQueue {
         size = 0;
     }
 
-    public void add(Object value) {
+    public void add(T value) {
         Node newNode = new Node(value);
         if (tail == null) {
             head = newNode;
@@ -41,18 +41,18 @@ public class MyQueue {
         return size;
     }
 
-    public Object peek() {
+    public T peek() {
         if (head == null) {
             return null;
         }
         return head.value;
     }
 
-    public Object poll() {
+    public T poll() {
         if (head == null) {
             return null;
         }
-        Object value = head.value;
+        T value = head.value;
         head = head.next;
         size--;
         return value;
